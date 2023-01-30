@@ -10,11 +10,15 @@ def main():
     #
     server_socket = socket.create_server(("localhost", 6379), reuse_port=True)
 
-    while True:
-        conn, _ = server_socket.accept() # wait for client
-        data = conn.recv(1024).decode().split("\n")
-        print(f"The server received this from the client {data}")
-        conn.send(b"+PONG\r\n")
+
+    with socket.create_server(("localhost", 6379), reuse_port=True) as server_socket:
+        conn, _ = server_socket.accept()
+        with conn:
+            while True:
+                # wait for client
+                data = conn.recv(1024).decode().split("\n")
+                print(f"The server received this from the client {data}")
+                conn.send(b"+PONG\r\n")
 
 
 
