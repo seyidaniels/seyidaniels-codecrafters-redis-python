@@ -12,9 +12,9 @@ def main():
 
     while True:
         conn, _ = server_socket.accept() # wait for client
-        data = conn.recv(1024)
+        data = conn.recv(1024).decode().split("\n")
         print(f"The server received this from the client {data}")
-        conn.sendall(data)
+        conn.send(b"+PONG\r\n")
 
 
 
