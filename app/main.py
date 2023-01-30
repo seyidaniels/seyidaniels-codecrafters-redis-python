@@ -9,9 +9,12 @@ def main():
     # Uncomment this to pass the first stage
     #
     server_socket = socket.create_server(("localhost", 6379), reuse_port=True)
-    conn, _ = server_socket.accept() # wait for client
-    conn.recv(1024)
-    conn.send(b"+PONG\r\n")
+
+    while True:
+        conn, _ = server_socket.accept() # wait for client
+        data = conn.recv(1024)
+        print(f"The server received this from the client {data}")
+        conn.sendall(data)
 
 
 
